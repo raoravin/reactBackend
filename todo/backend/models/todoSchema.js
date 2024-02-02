@@ -9,13 +9,13 @@ const TodoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    complete: {
+    completed: {
         type: Boolean,
         required: true,
     },
     user: {
         type:mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Users",
         required: true
     }
 },{timestamps: true});

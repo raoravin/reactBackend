@@ -234,6 +234,12 @@ export const deleteUser = async (req, res) => {
             });
         }
 
+        const todo = await Todo.find({user: req.user})
+        if(todo) {
+            await Todo.deleteMany({user: req.user})
+        }
+
+        res.clearCookie("token");
         await user.deleteOne();
 
         res.status(200).json({
