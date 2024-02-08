@@ -37,15 +37,13 @@ export const register = async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn:360000
         });
-
         // res.cookie("token", token, {
         //     expires: new Date(Date.now() + 2589200000),
         //     httpOnly:true
         // })
 
         res.cookie("token", token, {
-            httpOnly: true, secure: true,
-            expires: new Date().setDate(expirationDate.getDate() + 1)
+            httpOnly: true, secure: true,expiresIn:360000
         });
 
         //Taken out password fron rest of the content fron frontend
@@ -99,25 +97,10 @@ export const login = async (req, res) => {
         });
 
 
-        res.cookie("token", token, {
-            httpOnly: true, secure: true,
-        });
-
-        res.cookie("ckjwkc", "cjwelkcmeklwnml",{
-            httpOnly: true, secure: true,
-        })
-        res.cookie("ck12jwkc", "cjwelkcmeklwnml",{
-            httpOnly: true, secure: true,
-        })
-       
-        res.cookie("ck34jwkc", "cjwelkcmeklwnml",{
-            httpOnly: true, secure: true,
-        })
-       
-        res.cookie("ck23jwkc", "cjwelkcmeklwnml",{
-            httpOnly: true, secure: true,
-        })
-       
+        // res.cookie("token", token, {
+        //     httpOnly: true, secure: true,
+        //     expiresIn:360000
+        // })
        
 
 
@@ -125,7 +108,7 @@ export const login = async (req, res) => {
         //     expires: new Date(Date.now() + 2589200000),
         //     httpOnly:true
         // })
-        // res.cookie("token", token, {httpOnly: true, expiresIn:360000});
+        res.cookie("token", token, {httpOnly: true, expiresIn:360000});
 
         //Taken out password fron rest of the content fron frontend
         const {password: pass, ...rest} = user._doc;
