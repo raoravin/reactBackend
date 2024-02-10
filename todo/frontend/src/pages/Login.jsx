@@ -3,6 +3,7 @@ import { useState } from "react";
 import { userContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/user";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,8 +18,13 @@ const Login = () => {
       password,
     };
     const response = await login(data);
+    // console.log(response.data.jwtToken)
     if (response.status === 200) {
       alert("User login successfully");
+      // Cookies.set('todoToken',response.data.jwtToken, { expires: 1 / 24 })
+      // // Example of retrieving the token from the cookie
+      // const storedToken = Cookies.get('todoToken');
+      // console.log(storedToken);           
       setUser(response.data.user);
       navigate("/");
     } else {

@@ -37,11 +37,7 @@ export const register = async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn:360000
         });
-        // res.cookie("token", token, {
-        //     expires: new Date(Date.now() + 2589200000),
-        //     httpOnly:true
-        // })
-
+        
         res.cookie("token", token, {
             httpOnly: true, secure: true,expiresIn:360000
         });
@@ -96,18 +92,6 @@ export const login = async (req, res) => {
             expiresIn:360000
         });
 
-
-        // res.cookie("token", token, {
-        //     httpOnly: true, secure: true,
-        //     expiresIn:360000
-        // })
-       
-
-
-        // res.cookie("token", token, {
-        //     expires: new Date(Date.now() + 2589200000),
-        //     httpOnly:true
-        // })
         res.cookie("token", token, {httpOnly: true, expiresIn:360000});
 
         //Taken out password fron rest of the content fron frontend
@@ -129,10 +113,6 @@ export const login = async (req, res) => {
 
 
 export const logout = async (req, res) => {
-    res.cookie("ckjwkc", "cjwelkcmeklwnml",{
-        httpOnly: true, secure: true,
-    })
-   
     res.clearCookie("token");
 
     res.status(200).json({
