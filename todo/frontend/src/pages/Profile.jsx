@@ -31,10 +31,10 @@ const Profile = () => {
         <h2 className="text-2xl">Age: {user?.age}</h2>
       </div>
       <div className="mt-3">
-        <button className=" my-2 bg-yellow-600 text-white w-full py-2 rounded">
+        <button onClick={() =>  navigate("/user/update/profile")} className=" my-2 bg-yellow-600 text-white w-full py-2 rounded">
           Update Profile
         </button>
-        <button className=" my-2 bg-blue-600 text-white w-full py-2 rounded">
+        <button onClick={() =>  navigate("/user/update/password")} className=" my-2 bg-blue-600 text-white w-full py-2 rounded">
           Update Password
         </button>
         <button onClick={logoutHandler} className=" my-2 bg-red-500 text-white w-full py-2 rounded">

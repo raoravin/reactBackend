@@ -9,7 +9,7 @@ import Todo from "../models/todoSchema.js";
 
 
 export const register = async (req, res) => {
-    const {name, email, password, age} = req.body;
+    const {name, email, password, age, terms} = req.body;
 
     try {
         let user = await User.findOne({email});
@@ -26,6 +26,7 @@ export const register = async (req, res) => {
             email,
             password:hashPassword,
             age,
+            terms
         });
 
         await user.save();
@@ -174,7 +175,7 @@ export const updateDetails = async (req, res) => {
 
         const {password:pass , ...rest} = user._doc;
         return res.status(200).json({
-            message: "User updated successfully", user: rest
+            message: "Profile updated successfully", user: rest
         });
 
     } catch (error) {

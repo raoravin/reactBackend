@@ -6,6 +6,7 @@ export const registerRules = [
     check("email", "Please give valid Email").isEmail().normalizeEmail(),
     check("password", "Password should be 6 or more characters").isLength({min:6}),
     check("age", "Age is required").notEmpty().trim().escape().isNumeric(),
+    check("terms", "Terms and Condition required").notEmpty().trim().escape(),
 
 ];
 

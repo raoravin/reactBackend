@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
     age: {
         type: Number,
         required: true,
+    },
+    terms: {
+        type: String,
+        required:true,
     }
 },{timestamps: true});
 

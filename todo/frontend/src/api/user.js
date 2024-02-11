@@ -11,7 +11,7 @@ const config = {
 
 export const register = async (user) => {
     try {
-        const res = await axios.post("http://localhost:3000/api/users/register", user)
+        const res = await axios.post("http://localhost:3000/api/users/register", user,config)
         return res
     } catch (error) {
         return error
@@ -53,7 +53,7 @@ export const getUser= async () => {
 
 export const updateUser = async (user) => {
     try {
-        const res = await axios.put("/api/users/updatedetails", user)
+        const res = await axios.put("http://localhost:3000/api/users/updatedetails", user,config)
         return res;
     } catch (error) {
         return error;
@@ -64,7 +64,7 @@ export const updateUser = async (user) => {
 
 export const updatePassword = async (data) => {
     try {
-        const res = await axios.put("/api/users/updatePassword", data)
+        const res = await axios.put("http://localhost:3000/api/users/updatePassword", data,config)
         return res;
     } catch (error) {
         return error;
@@ -73,7 +73,7 @@ export const updatePassword = async (data) => {
 
 export const delteUser = async () => {
     try {
-        const res = await axios.delete("/api/users/delete")
+        const res = await axios.delete("http://localhost:3000/api/users/delete",config)
         return res
     } catch (error) {
         return error
