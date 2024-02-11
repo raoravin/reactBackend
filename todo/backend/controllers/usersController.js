@@ -99,7 +99,7 @@ export const login = async (req, res) => {
         const {password: pass, ...rest} = user._doc;
         
         res.status(200).json({
-            message: "User User Login Successfull",
+            message: "User Login Successfull",
             user:rest
         });
     } catch (error) {

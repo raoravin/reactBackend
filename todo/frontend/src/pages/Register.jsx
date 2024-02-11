@@ -16,20 +16,27 @@ function Register() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(userContext);
 
-   // State to track the checkbox status
-   const [terms, setTerms] = useState("");
+  // State to track the checkbox status
+  const [terms, setTerms] = useState(false);
 
-   // Handler function for the checkbox change event
-   const handleCheckboxChange = () => {
-     // Update the state based on the current state
-     setTerms("Accepted");
-   };
- 
+  // Handler function for the checkbox change event
+  const handleCheckboxChange = () => {
+    // Update the state based on the current state
+    setTerms(!terms);
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
-      toast.warn("Password does not match");
+      toast.warn("Password does not match", {
+        autoClose: 3000,
+      });
+      return;
+    }
+    if (!terms) {  // Fix: Check if terms checkbox is not checked
+      toast.warn("Please accept the terms and conditions", {
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -38,17 +45,24 @@ function Register() {
       email,
       age,
       password,
-      terms
+      terms,
     };
 
     const response = await register(data);
-    console.log(response);
     if (response.status === 202) {
-      toast.success(response.data.message)
+      toast.success(response.data.message, {
+        autoClose: 3000,
+      });
       setUser(response.data.user);
       navigate("/");
     } else {
-      toast.error(response.response.data.errors[0].msg)
+     
+      toast.error(response.response.data.message, {
+        autoClose: 3000,
+      });
+       toast.warn(response?.response?.data?.errors[0]?.msg, {
+        autoClose: 3000,
+      });
     }
   };
 
@@ -201,7 +215,7 @@ function Register() {
                 Already have an account?
                 <a
                   href="#"
-                  onClick={() =>  navigate("/user/login")}
+                  onClick={() => navigate("/user/login")}
                   className="font-medium ms-1 underline text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here

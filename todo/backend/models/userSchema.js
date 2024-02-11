@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     terms: {
-        type: String,
+        type: Boolean,
         required:true,
     }
 },{timestamps: true});

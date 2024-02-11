@@ -24,12 +24,22 @@ const Login = () => {
 
     const response = await login(data);
 
-    if (response.status === 200){
-      toast.warm("User login successfully");        
+    if (response.statusText === "OK"){
+      toast.success(response.data.message, {
+        autoClose: 3000,
+        theme: "colored",
+      });        
       setUser(response.data.user);
       navigate("/");
     } else {
-      toast.error(response.response.data.errors[0].msg)
+      toast.error(response.response.data.message, {
+        autoClose: 3000,
+        theme: "colored",
+      });
+      toast.warn(response.response.data?.errors[0]?.msg, {
+        autoClose: 3000,
+        theme: "colored",
+      });
     }
   };
 

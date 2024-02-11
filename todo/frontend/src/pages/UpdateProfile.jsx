@@ -26,11 +26,15 @@ const UpdateProfile = () => {
     const response = await updateUser(data);
     console.log(response);
     if (response.statusText === "OK") {
-      toast.success(response.data.message)
+      toast.success(response.data.message, {
+        autoClose: 3000,
+      })
       setUser(response.data.user);
       navigate("/user/profile");
     } else {
-      toast(response.response.data.errors[0].msg)
+      toast.error(response.response.data.errors[0].msg, {
+        autoClose: 3000,
+      })
     }
   };
 
