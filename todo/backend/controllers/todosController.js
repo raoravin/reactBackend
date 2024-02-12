@@ -51,12 +51,12 @@ export const getTodo = async (req, res) => {
 
 
 export const createTodo = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description,completed } = req.body;
     try {
         const todo = await Todo.create({
             title,
             description,
-            completed: false,
+            completed,
             user: req.user
         });
 
@@ -122,6 +122,45 @@ export const updateTodo = async (req, res) => {
         console.error(error.message);
         res.status(500).send({
             errors: "Internal Server Eroor"
+        });
+    }
+}
+
+
+
+export const updateToggle = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const todo = await Todo.findById(id);
+
+        if (!todo) {
+            return res.status(404).json({
+                message: "Todo Not Found"
+            });
+        }
+
+        // Check if the user is authorized to toggle the todo
+        if (todo.user.toString() !== req.user.toString()) {
+            return res.status(403).json({
+                message: "Not Authorized"
+            });
+        }
+
+        // Toggle the 'completed' field
+        todo.completed = !todo.completed;
+
+        // Save the updated todo
+        await todo.save();
+
+        res.status(200).json({
+            message: "Todo Toggled",
+            completed: todo.completed
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            errors: "Internal Server Error"
         });
     }
 }

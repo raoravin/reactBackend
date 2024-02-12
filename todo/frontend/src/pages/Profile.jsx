@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { userContext } from "../Context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { delteUser, logout } from "../api/user";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const { user, setUser } = useContext(userContext);
   const navigate = useNavigate();
+  const location = useLocation()
+  // console.log(location.pathname);
+  // console.log(window.location);
 
   const logoutHandler = async (e) => {
     e.preventDefault();

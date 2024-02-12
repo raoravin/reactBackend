@@ -1,10 +1,11 @@
-import {Navigate} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 
 
 
 const ProtectedRoutes = ({loggedIn, children}) => {
+
     if(!loggedIn) {
-        return <Navigate to="/user/login" replace />
+        return <Navigate to={location.pathname} replace />
     }
     return children;
 };
