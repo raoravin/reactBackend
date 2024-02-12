@@ -24,7 +24,6 @@ const UpdateProfile = () => {
     // console.log(data);
 
     const response = await updateUser(data);
-    console.log(response);
     if (response.statusText === "OK") {
       toast.success(response.data.message, {
         autoClose: 3000,

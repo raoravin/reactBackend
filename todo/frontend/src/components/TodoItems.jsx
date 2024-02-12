@@ -41,7 +41,8 @@ const TodoItems = ({ item }) => {
 
       // Update the local state
       if (response.statusText === "OK"){
-        setIsCompleted(response.data.completed);     
+        setIsCompleted(response.data.completed);  
+        window.location.reload();   
       } else {
         toast.error(response.response.data.message, {
           autoClose: 3000,
@@ -82,6 +83,7 @@ const TodoItems = ({ item }) => {
 
   function closeModal() {
     setIsOpen(false);
+    window.location.reload();
   }
 
 

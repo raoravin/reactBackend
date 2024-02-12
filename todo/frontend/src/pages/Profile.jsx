@@ -21,7 +21,7 @@ const Profile = () => {
         autoClose: 3000,
       });
       setUser({});
-      navigate("/user/login");
+      navigate("/");
     } else {
       toast.error(response.response.data.errors[0].msg, {
         autoClose: 3000,
@@ -42,7 +42,7 @@ const Profile = () => {
           autoClose: 3000,
         });
         setUser({});
-        navigate("/user/register");
+        navigate("/");
       } else {
         toast.error(response.response.data?.errors[0]?.msg, {
           autoClose: 3000,

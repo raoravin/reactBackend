@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../api/user";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
-
+import { LuEye } from "react-icons/lu";
+import { LuEyeOff } from "react-icons/lu";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { user, setUser } = useContext(userContext);
   const navigate = useNavigate();
 
@@ -24,11 +24,11 @@ const Login = () => {
 
     const response = await login(data);
 
-    if (response.statusText === "OK"){
+    if (response.statusText === "OK") {
       toast.success(response.data.message, {
         autoClose: 3000,
         theme: "colored",
-      });        
+      });
       setUser(response.data.user);
       navigate("/");
     } else {
@@ -41,6 +41,10 @@ const Login = () => {
         theme: "colored",
       });
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -74,30 +78,36 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className=" outline-none border  text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required=""
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="relative">
                 <label
                   htmlFor="password"
-                  className="block mt-3 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block my-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 mt-2 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 outline-none my-2 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <a
+                  className="absolute right-3 top-1/2 mt-1 text-xl"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <LuEye /> : <LuEyeOff />}{" "}
+                </a>
               </div>
 
               <button
@@ -107,10 +117,10 @@ const Login = () => {
                 Login an account
               </button>
               <p className="text-sm font-light mt-1 text-gray-500 dark:text-gray-400">
-              Don't have an account?
+                Don't have an account?
                 <a
                   href="#"
-                  onClick={() =>  navigate("/user/register")}
+                  onClick={() => navigate("/user/register")}
                   className="font-medium ms-1 underline text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Register here
