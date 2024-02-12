@@ -14,14 +14,10 @@ const TodoItems = ({ item }) => {
     try {
       // Make a request to the server to toggle the Todo
       const response = await updateToggle(item._id);
-      console.log(response);
 
       // Update the local state
       if (response.statusText === "OK"){
-        setIsCompleted(response.data.completed);
-        toast.success(response.data.message, {
-          autoClose: 3000,
-        });        
+        setIsCompleted(response.data.completed);     
       } else {
         toast.error(response.response.data.message, {
           autoClose: 3000,
@@ -50,9 +46,9 @@ const TodoItems = ({ item }) => {
 
   return (
     <tr className={`${isCompleted ? "bg-red-600" : ''}`}>
-      <td className={`border px-4 py-2 ${isCompleted ? "line-through" : ''} ` }>{item.title}</td>
-      <td className={`border px-4 py-2 ${isCompleted ? "line-through ": ''} ` }>{item.description}</td>
-      <td className={`border px-4 py-2`}>
+      <td className={`border px-4 py-2 text-start text-wrap ${isCompleted ? "line-through" : ''} ` }>{item.title}</td>
+      <td className={`border px-4 py-2 text-start ${isCompleted ? "line-through ": ''} ` }>{item.description}</td>
+      <td className={`border px-4 py-2`}> 
         <div className="flex items-center h-5">
           <input
             id="terms"
@@ -67,7 +63,7 @@ const TodoItems = ({ item }) => {
         </div>
       </td>
       <td className=" border px-4 py-2">
-        <button className=" bg-blue-500 text-white px-2 rounded">View</button>
+        <button onClick={() => navigate(`/view/todo/${item._id}`)} className=" bg-blue-500 text-white px-2 rounded">View</button>
       </td>
       <td className=" border px-4 py-2">
         <button className=" bg-green-500 text-white px-2 rounded">

@@ -29,9 +29,9 @@ export const createTodo = async (todo) => {
 
 
 
-export const getTodo = async () => {
+export const getTodo = async (id) => {
     try {
-        const res = await axios.get(`/api/todos/${id}`);
+        const res = await axios.get(`http://localhost:3000/api/todos/${id}`,config);
         return res;
     } catch (error) {
         return error;
