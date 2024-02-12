@@ -6,6 +6,12 @@ import "./index.css";
 import { UserContextProvider } from "./Context/UserContext.jsx";
 import { ToastContainer } from "react-toastify";
 import { TodoContextProvider } from "./Context/TodoContext.jsx";
+import Modal from 'react-modal';
+
+
+// Set the app element for accessibility
+Modal.setAppElement('#root'); // Replace '#root' with the actual ID of your app element
+
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
