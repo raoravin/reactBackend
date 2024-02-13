@@ -116,12 +116,13 @@ export const updateTodo = async (req, res) => {
 
 
         res.status(200).json({
-            message: "Todo Updated"
+            message: "Todo Updated",
+            todo:updatedTodo
         })
     } catch (error) {
         console.error(error.message);
         res.status(500).send({
-            errors: "Internal Server Eroor"
+            errors: "Internal Server Eroor",
         });
     }
 }

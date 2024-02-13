@@ -80,6 +80,18 @@ function Register() {
     setShowCPassword((prev) => !prev);
   };
 
+  const handleAgeChange = (e) => {
+    // Ensure the entered value is less than or equal to 100
+    const newAge = e.target.value;
+    if (newAge === '' || (parseInt(newAge, 10) <= 100 && parseInt(newAge, 10) >= 0)) {
+      setAge(newAge);
+    }else {
+      toast.warn("Age not > 100", {
+        autoClose: 3000,
+      });
+    }
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900 h-screen">
       <div className="flex flex-col items-center justify-center px-6 py-16 ">
@@ -151,7 +163,7 @@ function Register() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
                   value={age}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={handleAgeChange}
                 />
               </div>
               <div className=" flex gap-4 py-2">
@@ -210,25 +222,14 @@ function Register() {
                     id="terms"
                     aria-describedby="terms"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                     required=""
                     checked={terms}
                     onChange={handleCheckboxChange}
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="terms"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
-                    I accept the
-                    <a
-                      className="font-medium ms-1 underline text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
-                    >
-                      Terms and Conditions
-                    </a>
-                  </label>
+                <label for="terms" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a></label>
                 </div>
               </div>
               <button
@@ -242,7 +243,7 @@ function Register() {
                 <a
                   href="#"
                   onClick={() => navigate("/user/login")}
-                  className="font-medium ms-1 underline text-primary-600 hover:underline dark:text-primary-500"
+                  className="text-blue-600 ms-1 font-medium underline dark:text-blue-500"
                 >
                   Login here
                 </a>
