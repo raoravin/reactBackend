@@ -4,7 +4,6 @@ import jwt  from "jsonwebtoken";
 const authorize = async (req, res, next) => {
 
     const userId = req.session.user && req.session.user.user
-    console.log(userId);
 
     if(!userId) {
         return res.status(401).json({

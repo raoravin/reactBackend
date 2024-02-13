@@ -6,6 +6,7 @@ import { todoContext } from "../Context/TodoContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
+// Styles for the modal
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent overlay
@@ -24,6 +25,7 @@ const customStyles = {
 };
 
 const TodoItems = ({ item }) => {
+  // Hooks and context
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
   const { todo, setTodo } = useContext(todoContext);
@@ -31,6 +33,7 @@ const TodoItems = ({ item }) => {
   const [title, setTitle] = useState(item.title);
   const [description, setDescription] = useState(item.description);
 
+  // Function to handle checkbox change
   const handleCheckboxChange = async () => {
     try {
       // Make a request to the server to toggle the Todo
@@ -38,7 +41,6 @@ const TodoItems = ({ item }) => {
 
       // Update the local state
       if (response.statusText === "OK") {
-        console.log(response);
         setIsCompleted(response.data.completed);
       } else {
         toast.error(response.response.data.message, {
@@ -50,12 +52,14 @@ const TodoItems = ({ item }) => {
     }
   };
 
+  // Function to handle todo deletion
   const deleteHandle = async () => {
     try {
       if (window.confirm("Are you sure?")) {
         const response = await deleteTodo(item._id);
         if (response.statusText === "OK") {
-          toast.success(response.data.message);
+          // toast.success(response.data.message);
+          window.location.reload();
         } else {
           toast.error(response.response.data.message);
         }
@@ -65,19 +69,12 @@ const TodoItems = ({ item }) => {
     }
   };
 
-  function openModal() {
-    setIsOpen(true);
-  }
+  // Functions for managing modal state
+  const openModal = () => setIsOpen(true);
+  const afterOpenModal = () => {};
+  const closeModal = () => setIsOpen(false);
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-    // window.location.reload();
-  }
-
+  // Function to handle todo update
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
@@ -87,12 +84,9 @@ const TodoItems = ({ item }) => {
     };
 
     const response = await updateTodo(item._id, data);
-    // console.log(response);
+
     if (response.statusText === "OK") {
       closeModal();
-      // window.location.reload();
-      
-      // setTodo(response.data.todo)
     } else {
       toast.error(response.response.data.errors[0].msg, {
         autoClose: 3000,
@@ -102,41 +96,9 @@ const TodoItems = ({ item }) => {
 
   return (
     <>
-      {/* <tr className={`${isCompleted ? "bg-red-600" : ''}`}>
-      <td className={`border px-4 py-2 text-start text-wrap ${isCompleted ? "line-through" : ''} ` }>{item.title}</td>
-      <td className={`border px-4 py-2 text-start ${isCompleted ? "line-through ": ''} ` }>{item.description}</td>
-      <td className={`border px-4 py-2`}> 
-        <div className="flex items-center h-5">
-          <input
-            id="terms"
-            aria-describedby="terms"
-            type="checkbox"
-            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-            required=""
-            checked={isCompleted}
-            onChange={handleCheckboxChange}
-          />
-          <p className=" ms-2">{isCompleted ? "compeleted" : ""}</p>
-        </div>
-      </td>
-      <td className=" border px-4 py-2">
-        <button onClick={() => navigate(`/view/todo/${item._id}`)} className=" bg-blue-500 text-white px-2 rounded">View</button>
-      </td>
-      <td className=" border px-4 py-2">
-        <button onClick={openModal} className=" bg-green-500 text-white px-2 rounded">
-          Update
-        </button>
-      </td>
-      <td className=" border px-4 py-2">
-        <button
-          onClick={deleteHandle}
-          className=" bg-red-600 text-white px-2 rounded"
-        >
-          Delete
-        </button>
-      </td>
-    </tr> */}
+      {/* Todo Item Row */}
       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        {/* Checkbox Column */}
         <td className="w-4 p-4">
           <div className="flex items-center">
             <input
@@ -152,31 +114,37 @@ const TodoItems = ({ item }) => {
             </label>
           </div>
         </td>
+        {/* Title Column */}
         <td className={`px-6 py-4 max-w-[200px] truncate ${isCompleted ? "line-through" : ''}`}>{item.title}</td>
+        {/* Description Column */}
         <td className={`px-6 py-4 max-w-[200px] truncate ${isCompleted ? "line-through" : ''}`}>{item.description}</td>
+        {/* View Button Column */}
         <td className=" px-4 py-2">
           <button
             onClick={() => navigate(`/view/todo/${item._id}`)}
-            className=" bg-blue-500 text-white px-2 rounded p-0.5"
+            className=" bg-blue-500 text-white px-3 rounded p-0.5"
           >
             View
           </button>
         </td>
+        {/* Update Button Column */}
         <td className=" px-4 py-2">
-        <button onClick={openModal} className=" bg-green-500 text-white p-0.5 px-2 rounded">
-          Update
-        </button>
-      </td>
-      <td className=" px-4 py-2">
-        <button
-          onClick={deleteHandle}
-          className=" bg-red-600 text-white px-2 rounded p-0.5"
-        >
-          Delete
-        </button>
-      </td>
+          <button onClick={openModal} className=" bg-green-500 text-white p-0.5 px-2 rounded">
+            Update
+          </button>
+        </td>
+        {/* Delete Button Column */}
+        <td className=" px-4 py-2">
+          <button
+            onClick={deleteHandle}
+            className=" bg-red-600 text-white px-2 rounded p-0.5"
+          >
+            Delete
+          </button>
+        </td>
       </tr>
 
+      {/* Actual Modal */}
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -184,30 +152,35 @@ const TodoItems = ({ item }) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
+        {/* Modal Content */}
         <div className=" w-screen rounded-lg shadow dark:border sm:max-w-xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            {/* Modal Title */}
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create and account
+              Update Todo
             </h1>
+            
+            {/* Form for Updating Todo */}
             <form onSubmit={handleSubmit}>
               <div>
                 <label
-                  htmlFor="name"
+                  htmlFor="title"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Title
                 </label>
+                {/* Title Input */}
                 <input
                   type="text"
                   name="title"
                   id="title"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  // placeholder="enter your name"
                   required=""
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
+              
               <div>
                 <label
                   htmlFor="description"
@@ -215,18 +188,19 @@ const TodoItems = ({ item }) => {
                 >
                   Description
                 </label>
+                {/* Description Input */}
                 <input
                   type="text"
                   name="description"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  // placeholder="name@company.com"
                   required=""
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 
+              {/* Checkbox for Completion Status */}
               <div className="flex items-center h-5 mt-5">
                 <input
                   id="terms"
@@ -237,9 +211,10 @@ const TodoItems = ({ item }) => {
                   checked={isCompleted}
                   onChange={(e) => setIsCompleted(!isCompleted)}
                 />
-                <p className=" text-white ms-2">completed or not</p>
+                <p className=" text-white ms-2">Completed or not</p>
               </div>
 
+              {/* Buttons for Closing and Updating */}
               <div className=" flex gap-4 mt-5">
                 <button
                   type="submit"

@@ -9,40 +9,59 @@ import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 
 const Login = () => {
+  // State to manage input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // User context for managing user state globally
   const { user, setUser } = useContext(userContext);
+
+  // Navigation hook for redirecting after form submission
   const navigate = useNavigate();
 
+  // Handler for form submission
   const submitHandler = async (e) => {
     e.preventDefault();
+    
+    // Data to be sent to login API
     const data = {
       email,
       password,
     };
 
-    const response = await login(data);
+    try {
+      // Sending a request to login API
+      const response = await login(data);
 
-    if (response.statusText === "OK") {
-      toast.success(response.data.message, {
-        autoClose: 3000,
-        theme: "colored",
-      });
-      setUser(response.data.user);
-      navigate("/");
-    } else {
-      toast.error(response.response.data.message, {
-        autoClose: 3000,
-        theme: "colored",
-      });
-      toast.warn(response.response.data?.errors[0]?.msg, {
-        autoClose: 3000,
-        theme: "colored",
-      });
+      // Handling the response
+      if (response.statusText === "OK") {
+        // Display success message
+        toast.success(response.data.message, {
+          autoClose: 3000,
+          theme: "colored",
+        });
+        // Set user in global context
+        setUser(response.data.user);
+        // Redirect to the home page
+        navigate("/");
+      } else {
+        // Display error messages
+        toast.error(response.response.data.message, {
+          autoClose: 3000,
+          theme: "colored",
+        });
+        toast.warn(response.response.data?.errors[0]?.msg, {
+          autoClose: 3000,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error logging in:", error.message);
     }
   };
 
+  // Function to toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -52,7 +71,7 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center py-20 px-6 mx-auto">
         <a
           href="#"
-          className=" py-5 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          className="py-5 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
             className="w-8 h-8 mr-2"
@@ -67,6 +86,7 @@ const Login = () => {
               Login and account
             </h1>
             <form onSubmit={submitHandler}>
+              {/* Input for User Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -78,13 +98,14 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className=" outline-none border  text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="outline-none border text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required=""
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+              {/* Input for User Password */}
               <div className="relative">
                 <label
                   htmlFor="password"
@@ -110,12 +131,15 @@ const Login = () => {
                 </a>
               </div>
 
+              {/* Button to Submit Form */}
               <button
                 type="submit"
                 className="w-full my-7 text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Login an account
               </button>
+
+              {/* Paragraph for Registration Link */}
               <p className="text-sm font-light mt-1 text-gray-500 dark:text-gray-400">
                 Don't have an account?
                 <a

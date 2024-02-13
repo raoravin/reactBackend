@@ -29,7 +29,7 @@ export const register = async (req, res) => {
       terms
     });
 
-    // await user.save();
+    await user.save();
 
     // const payload = {
     //   user: user._id,
@@ -51,7 +51,6 @@ export const register = async (req, res) => {
     res.status(202).json({
       message: "User created Successfully",
       user: rest,
-      token
     });
 
   } catch (error) {
@@ -142,7 +141,6 @@ export const logout = async (req, res) => {
 
 
 export const getMe = async (req, res) => {
-  console.log(req.user);
   try {
     const user = await User.findById(req.user);
     if (!user) {

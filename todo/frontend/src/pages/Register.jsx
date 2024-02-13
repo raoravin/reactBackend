@@ -8,8 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 
-
 function Register() {
+  // State variables to store user input
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
@@ -18,8 +18,10 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
 
-
+  // React Router hook for navigation
   const navigate = useNavigate();
+
+  // Context to manage user state
   const { user, setUser } = useContext(userContext);
 
   // State to track the checkbox status
@@ -31,21 +33,50 @@ function Register() {
     setTerms(!terms);
   };
 
+  // Handler function for age input change
+  const handleAgeChange = (e) => {
+    // Ensure the entered value is less than or equal to 100
+    const newAge = e.target.value;
+    if (newAge === '' || (parseInt(newAge, 10) <= 100 && parseInt(newAge, 10) >= 0)) {
+      setAge(newAge);
+    } else {
+      toast.warn("Age should be between 0 and 100", {
+        autoClose: 3000,
+      });
+    }
+  };
+
+  // Handler function to toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // Handler function to toggle confirm password visibility
+  const toggleCPasswordVisibility = () => {
+    setShowCPassword((prev) => !prev);
+  };
+
+  // Handler function to submit the registration form
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Checking if passwords match
     if (password !== confirmpassword) {
       toast.warn("Password does not match", {
         autoClose: 3000,
       });
       return;
     }
-    if (!terms) {  // Fix: Check if terms checkbox is not checked
+
+    // Checking if terms checkbox is not checked
+    if (!terms) {
       toast.warn("Please accept the terms and conditions", {
         autoClose: 3000,
       });
       return;
     }
 
+    // Creating data object with user input
     const data = {
       name,
       email,
@@ -54,39 +85,23 @@ function Register() {
       terms,
     };
 
+    // Making a request to register the user
     const response = await register(data);
+
+    // Handling the response from the server
     if (response.status === 202) {
       toast.success(response.data.message, {
         autoClose: 3000,
       });
+
+      // Updating user context and redirecting to the home page
       setUser(response.data.user);
       navigate("/");
     } else {
-     
       toast.error(response.response.data.message, {
         autoClose: 3000,
       });
-       toast.warn(response?.response?.data?.errors[0]?.msg, {
-        autoClose: 3000,
-      });
-    }
-  };
-
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-  const toggleCPasswordVisibility = () => {
-    setShowCPassword((prev) => !prev);
-  };
-
-  const handleAgeChange = (e) => {
-    // Ensure the entered value is less than or equal to 100
-    const newAge = e.target.value;
-    if (newAge === '' || (parseInt(newAge, 10) <= 100 && parseInt(newAge, 10) >= 0)) {
-      setAge(newAge);
-    }else {
-      toast.warn("Age not > 100", {
+      toast.warn(response?.response?.data?.errors[0]?.msg, {
         autoClose: 3000,
       });
     }
@@ -109,9 +124,10 @@ function Register() {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mb-10 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create and account
+              Create an account
             </h1>
             <form onSubmit={submitHandler}>
+              {/* Input fields for user registration */}
               <div>
                 <label
                   htmlFor="name"
@@ -124,7 +140,7 @@ function Register() {
                   name="name"
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="enter your name"
+                  placeholder="Enter your name"
                   required=""
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -159,7 +175,7 @@ function Register() {
                   type="number"
                   name="age"
                   id="age"
-                  placeholder="••••••••"
+                  placeholder="Enter your age"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
                   value={age}
@@ -167,6 +183,7 @@ function Register() {
                 />
               </div>
               <div className=" flex gap-4 py-2">
+                {/* Input field for password with toggle visibility button */}
                 <div className=" relative">
                   <label
                     htmlFor="password"
@@ -175,7 +192,7 @@ function Register() {
                     Password
                   </label>
                   <input
-                    type={showPassword ?  "text" : "password"}
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="••••••••"
@@ -185,21 +202,22 @@ function Register() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <a
-                  className="absolute right-3 top-1/2 mt-2 text-xl"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <LuEye /> : <LuEyeOff />}{" "}
-                </a>
+                    className="absolute right-3 top-1/2 mt-2 text-xl"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <LuEye /> : <LuEyeOff />}{" "}
+                  </a>
                 </div>
+                {/* Input field for confirm password with toggle visibility button */}
                 <div className="relative">
                   <label
                     htmlFor="cfPassword"
                     className="block my-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    confirmPassword
+                    Confirm Password
                   </label>
                   <input
-                    type={showCPassword ?  "text" : "password"}
+                    type={showCPassword ? "text" : "password"}
                     name="cfPassword"
                     id="cfPassword"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -209,13 +227,14 @@ function Register() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   <a
-                  className="absolute right-3 top-1/2 mt-2 text-xl"
-                  onClick={toggleCPasswordVisibility}
-                >
-                  {showCPassword ? <LuEye /> : <LuEyeOff />}{" "}
-                </a>
+                    className="absolute right-3 top-1/2 mt-2 text-xl"
+                    onClick={toggleCPasswordVisibility}
+                  >
+                    {showCPassword ? <LuEye /> : <LuEyeOff />}{" "}
+                  </a>
                 </div>
               </div>
+              {/* Checkbox for accepting terms and conditions */}
               <div className="flex my-2 items-start">
                 <div className="flex items-center h-5">
                   <input
@@ -229,15 +248,19 @@ function Register() {
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                <label for="terms" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a></label>
+                  <label for="terms" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    I agree with the <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a>
+                  </label>
                 </div>
               </div>
+              {/* Submit button for creating an account */}
               <button
                 type="submit"
                 className="w-full mt-2 text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Create an account
               </button>
+              {/* Link to login page for users with existing accounts */}
               <p className="text-sm font-light mt-3 text-gray-500 dark:text-gray-400">
                 Already have an account?
                 <a
