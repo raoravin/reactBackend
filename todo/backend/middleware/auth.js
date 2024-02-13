@@ -3,17 +3,17 @@ import jwt  from "jsonwebtoken";
 
 const authorize = async (req, res, next) => {
 
-    const token = req.cookies.token;
+    const userId = req.session.user && req.session.user.user
+    console.log(userId);
 
-    if(!token) {
+    if(!userId) {
         return res.status(401).json({
             message: "Not Authorize"
         })
     };
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.user;
+        req.user = userId;
         next();
     } catch (error) {
        console.log(error.message);
