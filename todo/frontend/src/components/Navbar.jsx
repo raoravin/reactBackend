@@ -8,11 +8,12 @@ import { userContext } from '../Context/UserContext';
 
 const Navbar = () => {
   const {user, setUser} = useContext(userContext)
+  // console.log(user._id);
   return (
     <nav className=" bg-gradient-to-r from-teal-400 from-10% via-amber-500 via-30% to-orange-100 to-90% py-3 text-white flex justify-between items-center">
       <h1 className='ml-1 font-bold text-2xl'>Todo App</h1>
       {
-        user?._id
+        user._id
          ? 
         <ul className='flex'> 
         <li className='mr-3'><Link className=' hover:text-pink-500 text-black' to="/">Home</Link></li>

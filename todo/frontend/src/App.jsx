@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
@@ -21,12 +21,24 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getUser();
-      setUser(res.data?.user);
+      try {
+        const res = await getUser();
+
+        // Check if res.data and res.data.user are defined before accessing properties
+        if (res.data && res.data.user) {
+          setUser(res.data.user);
+        } else {
+          // Handle the case where data or user is not defined
+          console.error("Data or user not available in response:", res);
+        }
+      } catch (error) {
+        // Handle errors during the API call
+        console.error("Error fetching user data:", error);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [setUser]);
 
   return (
     <div className="App bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
@@ -36,18 +48,29 @@ function App() {
           path="/"
           element={
             user._id ? (
-              <Navigate to="/logged-in-home" replace />
+              <Navigate to={"/loggedin"} replace />
             ) : (
-              <Navigate to="/home" replace />
+              <Navigate to={"/loggedout"} replace />
             )
           }
         />
-        <Route path="/logged-in-home" element={<LoggedInHome />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/loggedin" element={<LoggedInHome />} />
+        <Route path="/loggedout" element={<Home />} />
+            {/* <Route
+            path="/"
+            element={ user || user._id ? <LoggedInHome /> : <Home />}
+          />
+          Add more routes as needed 
+          Catch-all route for unknown routes 
+          */}
+          <Route
+            path="*"
+            element={<Navigate to={"/"} replace />}
+          /> 
         <Route
           path="/user/register"
           element={
-            <UnProtectedRoutes loggedIn={user?._id ? true : false}>
+            <UnProtectedRoutes loggedIn={user._id ? true : false}>
               <Register />
             </UnProtectedRoutes>
           }
@@ -55,7 +78,7 @@ function App() {
         <Route
           path="/user/login"
           element={
-            <UnProtectedRoutes loggedIn={user?._id ? true : false}>
+            <UnProtectedRoutes loggedIn={user._id ? true : false}>
               <Login />
             </UnProtectedRoutes>
           }
@@ -63,7 +86,7 @@ function App() {
         <Route
           path="/user/profile"
           element={
-            <ProtectedRoutes loggedIn={user?._id ? true : false}>
+            <ProtectedRoutes loggedIn={user._id ? true : false}>
               <Profile />
             </ProtectedRoutes>
           }
@@ -71,7 +94,7 @@ function App() {
         <Route
           path="/todo/create"
           element={
-            <ProtectedRoutes loggedIn={user?._id ? true : false}>
+            <ProtectedRoutes loggedIn={user._id ? true : false}>
               <CreateTodo />
             </ProtectedRoutes>
           }
@@ -79,7 +102,7 @@ function App() {
         <Route
           path="/user/update/profile"
           element={
-            <ProtectedRoutes loggedIn={user?._id ? true : false}>
+            <ProtectedRoutes loggedIn={user._id ? true : false}>
               <UpdateProfile />
             </ProtectedRoutes>
           }
@@ -87,7 +110,7 @@ function App() {
         <Route
           path="/user/update/password"
           element={
-            <ProtectedRoutes loggedIn={user?._id ? true : false}>
+            <ProtectedRoutes loggedIn={user._id ? true : false}>
               <UpdatePassword />
             </ProtectedRoutes>
           }
@@ -95,7 +118,7 @@ function App() {
         <Route
           path="/view/todo/:id"
           element={
-            <ProtectedRoutes loggedIn={user?._id ? true : false}>
+            <ProtectedRoutes loggedIn={user._id ? true : false}>
               <ViewTodo />
             </ProtectedRoutes>
           }

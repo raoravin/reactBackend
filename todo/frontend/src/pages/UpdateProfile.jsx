@@ -9,9 +9,9 @@ const UpdateProfile = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(userContext);
 
-  const [name, setName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
-  const [age, setAge] = useState(user?.age);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [age, setAge] = useState(user.age);
 
   const submitHandler = async (e) => {
     e.preventDefault();
