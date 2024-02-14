@@ -48,18 +48,17 @@ const TodoItems = ({ item }) => {
         });
       }
     } catch (error) {
-      console.error("Error toggling Todo:", error.message);
+      toast.error("Error toggling Todo:", error.message);
     }
   };
 
   // Function to handle todo deletion
-  const deleteHandle = async () => {
+  const deleteHandle = async (todoId) => {
     try {
       if (window.confirm("Are you sure?")) {
         const response = await deleteTodo(item._id);
         if (response.statusText === "OK") {
-          // toast.success(response.data.message);
-          window.location.reload();
+          setTodo((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId));
         } else {
           toast.error(response.response.data.message);
         }
@@ -74,6 +73,11 @@ const TodoItems = ({ item }) => {
   const afterOpenModal = () => {};
   const closeModal = () => setIsOpen(false);
 
+
+
+
+  
+
   // Function to handle todo update
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,14 +87,25 @@ const TodoItems = ({ item }) => {
       completed: isCompleted,
     };
 
-    const response = await updateTodo(item._id, data);
-
-    if (response.statusText === "OK") {
-      closeModal();
-    } else {
-      toast.error(response.response.data.errors[0].msg, {
-        autoClose: 3000,
-      });
+    try {
+      const response = await updateTodo(item._id, data);
+  
+      if (response.statusText === "OK") {
+        closeModal();
+        setTodo((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo._id === item._id ? { ...todo, ...response.data.todo } : todo
+        )
+      );
+      } else {
+        toast.error(response.response.data.errors[0].msg, {
+          autoClose: 3000,
+        });
+        // Revert UI if API call fails
+      }
+    } catch (error) {
+      toast.error("Error updating todo:", error);
+      // Revert UI if API call fails
     }
   };
 
@@ -136,7 +151,7 @@ const TodoItems = ({ item }) => {
         {/* Delete Button Column */}
         <td className=" px-4 py-2">
           <button
-            onClick={deleteHandle}
+            onClick={() => deleteHandle(item._id)}
             className=" bg-red-600 text-white px-2 rounded p-0.5"
           >
             Delete
