@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { todoContext } from "../Context/TodoContext";
 import TodoItems from "./TodoItems";
-import { getTodos } from "../api/todo";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Pagination from "./Pagination";
 import TodoFilter from "./TodoFilter";
+import { fetchTodo } from "../utils/todoApi";
 
 function TodoList() {
   const { todo, setTodo } = useContext(todoContext);
@@ -17,40 +17,14 @@ function TodoList() {
       return savedPage;
     }
   );
-  const todosPerPage = 6;
+  const todosPerPage = 8;
   const [active, setActive] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   useEffect(() => {
-    fetchData();
+    fetchTodo(todo,setTodo);
   }, [setTodo]);
-
-  // useEffect(() => {
-  //   const savedPage = parseInt(localStorage.getItem("currentPage"), 10) || 1;
-  //   setCurrentPage(savedPage);
-  //   handlePageChange(savedPage); // Manually trigger page change with the saved page
-  // }, []); // Load current page from localStorage on component mount
-
-
-  // useEffect(() => {
-  //   localStorage.setItem("currentPage", currentPage.toString());
-  // }, [currentPage]); // Save current page to localStorage when it changes
-
-  const fetchData = async () => {
-    try {
-      const response = await getTodos();
-
-      // Update state with fetched todos if successful, else show an error toast
-      if (response.statusText === "OK") {
-        setTodo(response.data.todos.reverse());
-      } else {
-        toast.error(response.response.data.message, {
-          autoClose: 3000,
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching todos:", error);
-    }
-  };
 
   useEffect(() => {
     const currentDate = new Date();
@@ -92,24 +66,20 @@ function TodoList() {
       ),
     };
 
-    // const filteredTodos = timeFilters[selectedFilter] || [];
-    // setFilteredTodos(filteredTodos.slice(0, currentPage * todosPerPage));
-    // const filteredTodos = timeFilters[selectedFilter] || [];
-    // setFilteredTodos(filteredTodos);
-    // setCurrentPage(1); // Reset current page when changing the filter
-
+  
     const filteredTodos = timeFilters[selectedFilter] || [];
+    
     setFilteredTodos(filteredTodos);
   
     // After filtering, we want to keep the current page if it's still within the valid range
     if (currentPage > Math.ceil(filteredTodos.length / todosPerPage)) {
       setCurrentPage(1);
     }
-  }, [todo, selectedFilter,currentPage,todosPerPage]);
+  }, [todo, selectedFilter,currentPage,todosPerPage, searchQuery]);
 
   const handleFilterChange = (event) => {
     setSelectedFilter(event.target.value);
-    // setCurrentPage(1); // Reset current page when changing the filter
+    setCurrentPage(1); // Reset current page when changing the filter
   };
 
   const handlePageChange = (page) => {
@@ -124,7 +94,8 @@ function TodoList() {
 
   return (
     <>
-      <div className="relative p-6 overflow-x-auto dark:bg-gray-800 dark:border-gray-700 shadow-md sm:rounded-lg">
+    <div className=" bg-red-700 w-auto h-[42.5rem] relative  dark:bg-gray-800 dark:border-gray-700 shadow-md sm:rounded-lg">
+      <div className=" p-6 dark:bg-gray-800 dark:border-gray-700 ">
         {/* Filters and Search Bar */}
         {/* Include the TodoFilter component */}
         <TodoFilter
@@ -167,9 +138,8 @@ function TodoList() {
               </th>
             </tr>
           </thead>
-          {/* Table Body */}
-
-          <tbody>
+          {/* Table Body */}  
+          <tbody >
             {/* Map through todos and render TodoItems component */}
             {Array.isArray(todo) && todo.length > 0 ? (
               visibleTodos.map((item) => (
@@ -184,11 +154,15 @@ function TodoList() {
               </tr>
             )}
           </tbody>
+
+        
           {/* Load More button */}
           {/* Pagination */}
         </table>
 
-        <div>
+        
+      </div>
+      <div className=" absolute left-1/2 right-1/2 bottom-6">
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}

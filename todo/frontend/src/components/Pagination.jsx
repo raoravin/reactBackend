@@ -77,7 +77,7 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`{py-2 px-2 mx-1 mt-5 border rounded-md ${currentPage === 1 ? "bg-gray-300" :" bg-white"} text-gray-600}`}
+          className={`{py-2 px-2 mx-1 mt-5 border rounded-md ${currentPage === 1 ? "hidden" :" bg-white"} text-gray-600}`}
         >
           <GrPrevious />
         </button>
@@ -85,7 +85,7 @@ const Pagination = ({ totalPages, currentPage, handlePageChange }) => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`{py-2 px-2 mx-1 mt-5 border rounded-md ${currentPage === totalPages ? "bg-gray-300" :" bg-white"} text-gray-600}`}
+          className={`{py-2 px-2 mx-1 mt-5 border rounded-md ${currentPage === totalPages ? "hidden" :" bg-white"} text-gray-600}`}
 
         >
           <GrNext />
