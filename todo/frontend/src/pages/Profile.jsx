@@ -66,6 +66,12 @@ const Profile = () => {
     }
   };
 
+
+  const testHandler = (e) => {
+    e.preventDefault()
+    navigate("/test")
+  }
+
   return (
     <div className="w-1/4 m-auto text-center">
       <h1 className="text-3xl my-3 font-bold">Profile</h1>
@@ -102,6 +108,13 @@ const Profile = () => {
           className="my-2 bg-red-700 text-white w-full py-2 rounded"
         >
           Delete Account
+        </button>
+
+        <button
+          onClick={testHandler}
+          className="my-2 bg-red-700 text-white w-full py-2 rounded"
+        >
+          Test
         </button>
       </div>
     </div>

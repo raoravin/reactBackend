@@ -55,18 +55,22 @@ function App() {
           }
         />
         <Route path="/loggedin" element={<LoggedInHome />} />
-        <Route path="/loggedout" element={<Home />} />
-            {/* <Route
+        <Route
+          path="/loggedout"
+          element={
+            <UnProtectedRoutes loggedIn={user._id ? true : false}>
+              <Home />
+            </UnProtectedRoutes>
+          }
+        />
+        {/* <Route
             path="/"
             element={ user || user._id ? <LoggedInHome /> : <Home />}
           />
           Add more routes as needed 
           Catch-all route for unknown routes 
           */}
-          <Route
-            path="*"
-            element={<Navigate to={"/"} replace />}
-          /> 
+        <Route path="*" element={<Navigate to={"/"} replace />} />
         <Route
           path="/user/register"
           element={
