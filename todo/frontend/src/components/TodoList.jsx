@@ -190,13 +190,24 @@ function TodoList() {
               {/* Map through todos and render TodoItems component */}
               {Array.isArray(todo) && todo.length > 0 ? (
                 visibleTodos.map((item) => (
-                  <TodoItems key={item._id} id={item._id} item={item} />
+                  <>
+                    <TodoItems key={item._id} id={item._id} item={item} />
+                    <div className=" absolute left-1/2 right-1/2 bottom-6">
+                      <Pagination
+                        totalPages={totalPages}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                      />
+                    </div>
+                  </>
                 ))
               ) : (
                 // Render a message if no todos found
                 <tr>
-                  <td colSpan="6" className="text-center">
-                    No todos found
+                  <td colSpan="6" className="text-center text-white pt-3">
+                    {Array.isArray(todo) && todo.length == 0
+                      ? "No todo found"
+                      : " Loading..."}
                   </td>
                 </tr>
               )}
@@ -205,13 +216,6 @@ function TodoList() {
             {/* Load More button */}
             {/* Pagination */}
           </table>
-        </div>
-        <div className=" absolute left-1/2 right-1/2 bottom-6">
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-          />
         </div>
       </div>
     </>
