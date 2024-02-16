@@ -34,7 +34,7 @@ app.use(session({
 
 app.use(cors({
     credentials:true,
-    origin: 'http://localhost:5173',
+    origin: 'https://react-backend-sjbh.vercel.app',
 }));
 
 
