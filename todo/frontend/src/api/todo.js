@@ -10,7 +10,7 @@ const config = {
 
 export const getTodos = async () => {
     try {
-        const res = await axios.get("http://localhost:3000/api/todos",config);
+        const res = await axios.get("https://react-backend-pink.vercel.app/api/todos",config);
         return res;
     } catch (error) {
         return error;
@@ -20,7 +20,7 @@ export const getTodos = async () => {
 
 export const createTodo = async (todo) => {
     try {
-        const res = await axios.post("http://localhost:3000/api/todos/create", todo, config);
+        const res = await axios.post("https://react-backend-pink.vercel.app/api/todos/create", todo, config);
         return res;
     } catch (error) {
         return error;
@@ -31,7 +31,7 @@ export const createTodo = async (todo) => {
 
 export const getTodo = async (id) => {
     try {
-        const res = await axios.get(`http://localhost:3000/api/todos/${id}`,config);
+        const res = await axios.get(`https://react-backend-pink.vercel.app/api/todos/${id}`,config);
         return res;
     } catch (error) {
         return error;
@@ -41,7 +41,7 @@ export const getTodo = async (id) => {
 
 export const updateTodo = async(id, todo) => {
     try {
-        const res = await axios.put(`http://localhost:3000/api/todos/update/${id}`,todo,config);
+        const res = await axios.put(`https://react-backend-pink.vercel.app/api/todos/update/${id}`,todo,config);
         return res;
     } catch (error) {
         return error;
@@ -50,7 +50,7 @@ export const updateTodo = async(id, todo) => {
 
 export const updateToggle = async(id, todo) => {
     try {
-        const res = await axios.put(`http://localhost:3000/api/todos/update/toggle/${id}`,todo,config);
+        const res = await axios.put(`https://react-backend-pink.vercel.app/api/todos/update/toggle/${id}`,todo,config);
         return res;
     } catch (error) {
         return error;
@@ -61,7 +61,7 @@ export const updateToggle = async(id, todo) => {
 
 export const deleteTodo = async(id) => {
     try {
-        const res = await axios.delete(`http://localhost:3000/api/todos/delete/${id}`,config);
+        const res = await axios.delete(`https://react-backend-pink.vercel.app/api/todos/delete/${id}`,config);
         return res;
     } catch (error) {
         return error;
