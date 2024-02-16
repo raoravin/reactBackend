@@ -9,6 +9,7 @@ import { fetchTodo } from "../utils/todoApi";
 import { FaSearch } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 
+
 function TodoList() {
   const { todo, setTodo } = useContext(todoContext);
   const [filteredTodos, setFilteredTodos] = useState([]);
@@ -20,11 +21,12 @@ function TodoList() {
   const todosPerPage = 8;
   const [active, setActive] = useState("");
   const [search, setSearch] = useState("");
-  const [searchIcon, setSearchIcon] = useState(true);
+  const [searchIcon, setSearchIcon] = useState(true)
 
   useEffect(() => {
     fetchTodo(todo, setTodo);
   }, [setTodo]);
+
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -33,7 +35,7 @@ function TodoList() {
   const handleFilterChange = (event) => {
     setSelectedFilter(event.target.value);
     if (selectedFilter !== "textFilter") {
-      setSearch("");
+      setSearch("")
     }
   };
 
@@ -75,6 +77,7 @@ function TodoList() {
           new Date(todoItem.createdAt) >= lastMonthStartDate &&
           new Date(todoItem.createdAt) <= lastMonthEndDate
       ),
+      important: todo.filter((todoItem) => todoItem.important === true),
       textFilter: todo.filter((todoItem) =>
         todoItem.title.toLowerCase().includes(search.toLowerCase())
       ),
@@ -90,6 +93,11 @@ function TodoList() {
     }
   }, [todo, selectedFilter, currentPage, todosPerPage, search]);
 
+  // const handleFilterChange = (event) => {
+  //   setSelectedFilter(event.target.value);
+  //   setCurrentPage(1); // Reset current page when changing the filter
+  // };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
     localStorage.setItem("currentPage", page.toString());
@@ -100,6 +108,7 @@ function TodoList() {
   const endIndex = startIndex + todosPerPage;
   const visibleTodos = filteredTodos.slice(startIndex, endIndex);
 
+
   return (
     <>
       <div className=" bg-red-700 w-auto h-[42.5rem] relative  dark:bg-gray-800 dark:border-gray-700 shadow-md sm:rounded-lg">
@@ -107,47 +116,46 @@ function TodoList() {
           {/* Filters and Search Bar */}
           {/* Include the TodoFilter component */}
           <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
-            <TodoFilter
-              selectedFilter={selectedFilter}
-              handleFilterChange={handleFilterChange}
-              search={search}
-            />
 
-            {/* Search bar */}
-            <label htmlFor="table-search" className="sr-only">
-              Search
-            </label>
-            <div className=" flex">
-              {/* <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+          <TodoFilter
+            selectedFilter={selectedFilter}
+            handleFilterChange={handleFilterChange}
+            search={search}
+          />
+
+          {/* Search bar */}
+          <label htmlFor="table-search" className="sr-only">
+            Search
+          </label>
+          <div className=" flex">
+            {/* <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
              
             </div> */}
-              {/* Search Input */}
-              <input
-                type="text"
-                id="table-search"
-                className="block p-2 ps-10 outline-none text-sm text-gray-900 border border-gray-300 rounded-lg w-80 rounded-e-none bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search htmlFor items..."
-                value={search}
-                onChange={handleSearchChange}
-                onClick={(e) => {
-                  setSelectedFilter("textFilter");
-                  setSearchIcon(!searchIcon);
-                }}
-              />
-              <button
-                className={`{ rounded-s-none rounded-lg p-3 ${
-                  searchIcon ? "hidden" : ""
-                } text-black bg-slate-300 }`}
-                disabled={searchIcon ? true : false}
-                onClick={(e) => {
-                  setSelectedFilter("newest");
-                  setSearch("");
-                  setSearchIcon(!searchIcon);
-                }}
-              >
-                {searchIcon ? <FaSearch /> : <RxCross2 />}
-              </button>
-            </div>
+            {/* Search Input */}
+            <input
+              type="text"
+              id="table-search"
+              className="block outline-none p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 rounded-e-none bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search htmlFor items"
+              value={search}
+              onChange={handleSearchChange}
+              onClick={(e) => {
+                setSelectedFilter("textFilter")
+                setSearchIcon(!searchIcon);
+              } }
+            />
+            <button 
+            className={`{text-black rounded-s-none rounded-lg bg-slate-300 p-3 ${searchIcon ? "hidden" : ""} }`}
+            disabled={searchIcon ? true : false}
+            onClick={(e) => {
+              setSelectedFilter("newest")
+              setSearch("")
+              setSearchIcon(!searchIcon)
+            }}
+            >
+              {searchIcon ? <FaSearch /> : <RxCross2 />}
+            </button>
+          </div>
           </div>
 
           {/* Todo List Table */}
@@ -190,24 +198,15 @@ function TodoList() {
               {/* Map through todos and render TodoItems component */}
               {Array.isArray(todo) && todo.length > 0 ? (
                 visibleTodos.map((item) => (
-                  <>
-                    <TodoItems key={item._id} id={item._id} item={item} />
-                    <div className=" absolute left-1/2 right-1/2 bottom-6">
-                      <Pagination
-                        totalPages={totalPages}
-                        currentPage={currentPage}
-                        handlePageChange={handlePageChange}
-                      />
-                    </div>
-                  </>
+                  <TodoItems key={item._id} id={item._id} item={item} />
                 ))
               ) : (
                 // Render a message if no todos found
                 <tr>
-                  <td colSpan="6" className="text-center text-white pt-3">
-                    {Array.isArray(todo) && todo.length == 0
-                      ? "No todo found"
-                      : " Loading..."}
+                  <td colSpan="6" className="text-center pt-2 text-white">
+                    {
+                      Array.isArray(todo) && todo.length == 0 ? (<p>No todo found</p>) : (<p>Loading...</p>)
+                    }
                   </td>
                 </tr>
               )}
@@ -216,6 +215,19 @@ function TodoList() {
             {/* Load More button */}
             {/* Pagination */}
           </table>
+        </div>
+        <div className=" absolute left-1/2 right-1/2 bottom-6">
+          {
+            Array.isArray(todo) && todo.length > 0 ?
+            ( <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+            />
+            ):
+            ""
+          }
+         
         </div>
       </div>
     </>

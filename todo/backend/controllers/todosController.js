@@ -51,12 +51,13 @@ export const getTodo = async (req, res) => {
 
 
 export const createTodo = async (req, res) => {
-    const { title, description,completed } = req.body;
+    const { title, description,completed,important } = req.body;
     try {
         const todo = await Todo.create({
             title,
             description,
             completed,
+            important,
             user: req.user
         });
 

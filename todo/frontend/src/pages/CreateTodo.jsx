@@ -9,6 +9,8 @@ const CreateTodo = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
+  const [important, setImportant] = useState(false);
+  // console.log(important);
 
   // Navigation hook for redirecting after form submission
   const navigate = useNavigate();
@@ -21,7 +23,8 @@ const CreateTodo = () => {
     const data = {
       title,
       description,
-      completed
+      completed,
+      important,
     };
 
     try {
@@ -106,6 +109,15 @@ const CreateTodo = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
+              </div>
+              <div className=' flex gap-2 mt-4'>
+                <input 
+                className="w-4 mt-1 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" 
+                type="checkbox"
+                // checked={important}
+                onChange={e => setImportant(!important)}
+                />
+                <p className=' text-white'>Important</p>
               </div>
               {/* Button to Submit Form */}
               <button

@@ -20,9 +20,8 @@ const TodoFilter = ({ selectedFilter, handleFilterChange,search}) => {
           <option value="2weeks">2 Weeks</option>
           <option value="1month">1 Month</option>
           <option value="lastmonth">Last Month</option>
-          <option className=" hidden" value="textFilter">{search === "" ? "searching" : "result" }</option>
-          <option className=" hidden" value="textFilter"></option>
-        </select>
+          <option value="important">important</option>
+          <option className=" hidden" value="textFilter">{search === "" ? "searching" : "result" }</option>        </select>
       </div>
   );
 };
