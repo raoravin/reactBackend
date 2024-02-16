@@ -8,7 +8,7 @@ const config = {
 
 export const register = async (user) => {
     try {
-        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/register", user,config)
+        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/register", user)
         return res
     } catch (error) {
         return error
@@ -18,7 +18,7 @@ export const register = async (user) => {
 
 export const login = async (user) => {
     try {
-        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/login", user,config)
+        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/login", user)
         return res
     } catch (error) {
         return error
@@ -28,7 +28,7 @@ export const login = async (user) => {
 
 export const logout = async () => {
     try {
-        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/logout",config)
+        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/logout")
         return res;
     } catch (error) {
         return error;
@@ -38,7 +38,7 @@ export const logout = async () => {
 
 export const getUser= async () => {
     try {
-        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/me",config)
+        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/me")
         return res;
     } catch (error) {
         return error;
