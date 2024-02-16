@@ -25,5 +25,4 @@ const TodoFilter = ({ selectedFilter, handleFilterChange,search}) => {
       </div>
   );
 };
-
 export default TodoFilter;

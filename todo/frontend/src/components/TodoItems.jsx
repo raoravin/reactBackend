@@ -24,7 +24,7 @@ const customStyles = {
   },
 };
 
-const TodoItems = ({ item }) => {
+const TodoItems = ({ item,timeSinceCreation }) => {
   // Hooks and context
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -157,6 +157,8 @@ const TodoItems = ({ item }) => {
             Delete
           </button>
         </td>
+        <td className={`px-6 py-4 }`}>{timeSinceCreation}</td>
+
       </tr>
 
       {/* Actual Modal */}
