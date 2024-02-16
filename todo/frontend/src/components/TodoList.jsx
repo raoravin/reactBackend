@@ -240,6 +240,8 @@ function TodoList() {
                       "No todos found in the last month"}
                     {selectedFilter === "important" &&
                       "No todos found in the important"}
+                      {selectedFilter === "textFilter" &&
+                      "no todo found"}
                     {/* Add more conditions based on your filter categories */}
                   </td>
                 </tr>
