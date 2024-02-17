@@ -8,7 +8,7 @@ const config = {
 
 export const register = async (user) => {
     try {
-        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/register", user)
+        const res = await axios.post("http://localhost:3000/api/users/register", user,config)
         return res
     } catch (error) {
         return error
@@ -18,7 +18,7 @@ export const register = async (user) => {
 
 export const login = async (user) => {
     try {
-        const res = await axios.post("https://react-backend-pink.vercel.app/api/users/login", user)
+        const res = await axios.post("http://localhost:3000/api/users/login", user,config)
         return res
     } catch (error) {
         return error
@@ -28,7 +28,7 @@ export const login = async (user) => {
 
 export const logout = async () => {
     try {
-        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/logout")
+        const res = await axios.get("http://localhost:3000/api/users/logout",config)
         return res;
     } catch (error) {
         return error;
@@ -38,7 +38,7 @@ export const logout = async () => {
 
 export const getUser= async () => {
     try {
-        const res = await axios.get("https://react-backend-pink.vercel.app/api/users/me")
+        const res = await axios.get("http://localhost:3000/api/users/me",config)
         return res;
     } catch (error) {
         return error;
@@ -50,7 +50,7 @@ export const getUser= async () => {
 
 export const updateUser = async (user) => {
     try {
-        const res = await axios.put("https://react-backend-pink.vercel.app/api/users/updatedetails", user,config)
+        const res = await axios.put("http://localhost:3000/api/users/updatedetails", user,config)
         return res;
     } catch (error) {
         return error;
@@ -61,7 +61,7 @@ export const updateUser = async (user) => {
 
 export const updatePassword = async (data) => {
     try {
-        const res = await axios.put("https://react-backend-pink.vercel.app/api/users/updatePassword", data,config)
+        const res = await axios.put("http://localhost:3000/api/users/updatePassword", data,config)
         return res;
     } catch (error) {
         return error;
@@ -70,7 +70,7 @@ export const updatePassword = async (data) => {
 
 export const delteUser = async () => {
     try {
-        const res = await axios.delete("https://react-backend-pink.vercel.app/api/users/delete",config)
+        const res = await axios.delete("http://localhost:3000/api/users/delete",config)
         return res
     } catch (error) {
         return error
